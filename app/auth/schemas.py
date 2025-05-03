@@ -2,10 +2,10 @@ from uuid import UUID
 from fastapi_users import schemas
 
 class UserRead(schemas.BaseUser[UUID]):
-    username: str
+    pass  # больше не нужно username
 
 class UserCreate(schemas.BaseUserCreate):
-    username: str
+    pass  # наследуем всё как есть: email + password
 
 class UserUpdate(schemas.BaseUserUpdate):
-    username: str | None = None
+    pass
