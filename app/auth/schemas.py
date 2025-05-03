@@ -1,11 +1,12 @@
-from uuid import UUID
 from fastapi_users import schemas
+from uuid import UUID
+from typing import Optional
 
 class UserRead(schemas.BaseUser[UUID]):
-    pass  # больше не нужно username
+    name: Optional[str] = None
 
 class UserCreate(schemas.BaseUserCreate):
-    pass  # наследуем всё как есть: email + password
+    name: Optional[str] = None
 
 class UserUpdate(schemas.BaseUserUpdate):
-    pass
+    name: Optional[str] = None
