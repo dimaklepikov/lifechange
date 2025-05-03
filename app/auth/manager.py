@@ -1,4 +1,6 @@
 import uuid
+from typing import AsyncGenerator
+
 from fastapi import Depends
 from fastapi_users.manager import BaseUserManager
 from fastapi_users.authentication import AuthenticationBackend, JWTStrategy, BearerTransport
@@ -22,6 +24,9 @@ class UserManager(BaseUserManager[User, uuid.UUID]):
     reset_password_token_secret = SECRET_KEY
     verification_token_secret = SECRET_KEY
 
+    def __init__(self, user_db):
+        super().__init__(user_db)
+
     async def create(
         self,
         user_create: UserCreate,
@@ -38,5 +43,6 @@ class UserManager(BaseUserManager[User, uuid.UUID]):
 
         return await self.user_db.create(user_dict)
 
-async def get_user_manager(user_db=Depends(get_user_db)):
-    yield UserManager(user_db)
+async def get_user_manager() -> AsyncGenerator[UserManager, None]:
+    async for user_db in get_user_db():
+        yield UserManager(user_db)
