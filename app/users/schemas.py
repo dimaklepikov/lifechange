@@ -18,10 +18,11 @@ class UserCreate(schemas.BaseUserCreate):
     name: Optional[str] = None
 
 class UserUpdate(schemas.BaseUserUpdate):
+    # TODO: Fix partial update
     name: Optional[str] = None
-    age: Optional[int]
-    weight: Optional[float]
-    height: Optional[float]
+    age: Optional[int] = None
+    weight: Optional[float] = None
+    height: Optional[float] = None
 
     class Config:
         orm_mode = True
