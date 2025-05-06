@@ -1,7 +1,6 @@
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String, ForeignKey
-from uuid import UUID
-from app.database import Base
+from sqlalchemy import String
+from app.db.database import Base
 
 
 class Task(Base):

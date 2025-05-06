@@ -10,7 +10,6 @@ class UserRead(schemas.BaseUser[UUID]):
     age: Optional[int]
     weight: Optional[float]
     height: Optional[float]
-    is_active: Optional[bool]
 
     class Config:
         orm_mode = True
@@ -20,3 +19,9 @@ class UserCreate(schemas.BaseUserCreate):
 
 class UserUpdate(schemas.BaseUserUpdate):
     name: Optional[str] = None
+    age: Optional[int]
+    weight: Optional[float]
+    height: Optional[float]
+
+    class Config:
+        orm_mode = True

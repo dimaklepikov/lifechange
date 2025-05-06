@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from app.auth.routes import router as auth_router
 from app.users.routes import router as user_router
-from app.database import engine, Base
+from app.db.database import engine, Base
 from app.admin import setup_admin
 from starlette.middleware.sessions import SessionMiddleware
 from app.config import SECRET_KEY

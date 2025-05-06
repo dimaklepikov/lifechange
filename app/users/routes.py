@@ -1,10 +1,29 @@
+
+from sqlalchemy import select
 from fastapi import APIRouter, Depends
 from app.models.user import User
-from app.users.schemas import UserRead
+from app.users.schemas import UserRead, UserUpdate
 from app.auth.routes import current_user
+from sqlalchemy.ext.asyncio import AsyncSession
+from app.db.session import get_async_session
 
 router = APIRouter()
 
 @router.get("/me", response_model=UserRead)
 async def get_me(user: User = Depends(current_user)):
     return user
+
+@router.put("/me", response_model=UserRead)
+async def update_me(
+    data: UserUpdate,
+    session: AsyncSession = Depends(get_async_session),
+    user: User = Depends(current_user)
+):
+    db_user = await session.scalar(select(User).where(User.id == user.id))
+
+    for field, value in data.dict(exclude_unset=True).items():
+        setattr(db_user, field, value)
+
+    await session.commit()
+    await session.refresh(db_user)
+    return db_user

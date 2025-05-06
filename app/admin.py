@@ -1,4 +1,4 @@
-from fastapi import Request, Form
+from fastapi import Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqladmin import Admin, ModelView
@@ -7,7 +7,7 @@ from fastapi_users.password import PasswordHelper
 
 from app.models.user import User
 from app.models.task import Task
-from app.database import engine
+from app.db.database import engine
 from app.config import SECRET_KEY
 from app.auth.manager import get_user_manager
 # from fastapi_users.manager import UserNotExists, InvalidPassword
