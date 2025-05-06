@@ -62,7 +62,7 @@ coverage.xml
 venv
 
 # Local dotenv changes
-.env
+app/.env
 .env.*
 
 versioned/

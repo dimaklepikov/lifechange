@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 from alembic import context
 from app.database import Base
 from app.config import DATABASE_URL
-from app.models import user, task
+from app.models import User, Task
 from sqlalchemy.ext.asyncio import create_async_engine
 
 # this is the Alembic Config object, which provides access to the values within the .ini file
@@ -12,6 +12,7 @@ config = context.config
 
 # Interpret the config file for Python logging.
 fileConfig(config.config_file_name)
+config.set_main_option('sqlalchemy.url', DATABASE_URL)
 
 target_metadata = Base.metadata
 
@@ -41,4 +42,7 @@ def run_migrations_online():
     asyncio.run(run_migrations())
 
 
-print("✅ Registered tables:", Base.metadata.tables.keys())
+if context.is_offline_mode():
+    raise NotImplementedError("Offline mode not supported in async setup")
+else:
+    run_migrations_online()
