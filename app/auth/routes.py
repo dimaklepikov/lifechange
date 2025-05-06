@@ -3,7 +3,7 @@ from uuid import UUID
 from fastapi_users import FastAPIUsers
 from app.auth.manager import get_user_manager, auth_backend
 from app.models.user import User
-from app.auth.schemas import UserRead, UserCreate, UserUpdate
+from app.auth.schemas import AuthUserRead, AuthUserCreate
 
 fastapi_users = FastAPIUsers[User, UUID](
     get_user_manager,
@@ -21,13 +21,7 @@ router.include_router(
 )
 
 router.include_router(
-    fastapi_users.get_register_router(UserRead, UserCreate),
+    fastapi_users.get_register_router(AuthUserRead, AuthUserCreate),
     prefix="/auth",
     tags=["auth"],
-)
-
-router.include_router(
-    fastapi_users.get_users_router(UserRead, UserUpdate),
-    prefix="/users",
-    tags=["users"],
 )

@@ -1,13 +1,12 @@
-import uuid
+from uuid import UUID
 from typing import AsyncGenerator
 
-from fastapi import Depends
 from fastapi_users.manager import BaseUserManager
 from fastapi_users.authentication import AuthenticationBackend, JWTStrategy, BearerTransport
 from app.models.user import User
 from app.auth.user_db import get_user_db
 from app.config import SECRET_KEY
-from app.auth.schemas import UserCreate
+from app.auth.schemas import AuthUserCreate
 
 bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
 
@@ -20,16 +19,20 @@ auth_backend = AuthenticationBackend(
     get_strategy=get_jwt_strategy,
 )
 
-class UserManager(BaseUserManager[User, uuid.UUID]):
+class UserManager(BaseUserManager[User, UUID]):
     reset_password_token_secret = SECRET_KEY
     verification_token_secret = SECRET_KEY
 
     def __init__(self, user_db):
         super().__init__(user_db)
 
+
+    def parse_id(self, user_id: str) -> UUID:
+        return UUID(user_id)
+
     async def create(
         self,
-        user_create: UserCreate,
+        user_create: AuthUserCreate,
         safe: bool = False,
         request=None
     ) -> User:

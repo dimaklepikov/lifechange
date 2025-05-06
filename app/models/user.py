@@ -8,6 +8,6 @@ class User(SQLAlchemyBaseUserTableUUID, Base):
 
     is_admin: Mapped[bool] = mapped_column(Boolean, default=False)
     name: Mapped[str] = mapped_column(String, nullable=False)
-    age: Mapped[str] = mapped_column(Integer, nullable=True)
-    weight: Mapped[str] = mapped_column(Float, nullable=True)
-    height: Mapped[str] = mapped_column(Float, nullable=True)
+    age: Mapped[int] = mapped_column(Integer, nullable=True)
+    weight: Mapped[float] = mapped_column(Float, nullable=True)
+    height: Mapped[float] = mapped_column(Float, nullable=True)
