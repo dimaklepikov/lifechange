@@ -1,6 +1,7 @@
 from fastapi_users import schemas
 from uuid import UUID
 from typing import Optional
+from pydantic import BaseModel, field_validator
 
 class UserRead(schemas.BaseUser[UUID]):
     id: UUID
@@ -17,12 +18,16 @@ class UserRead(schemas.BaseUser[UUID]):
 class UserCreate(schemas.BaseUserCreate):
     name: Optional[str] = None
 
-class UserUpdate(schemas.BaseUserUpdate):
-    # TODO: Fix partial update
+class UserUpdate(BaseModel):
     name: Optional[str] = None
-    age: Optional[int] = None
     weight: Optional[float] = None
     height: Optional[float] = None
+    age: Optional[int] = None
+    is_admin: Optional[bool] = None
 
-    class Config:
-        orm_mode = True
+    @classmethod
+    @field_validator("weight", "height", mode="before")
+    def empty_string_to_none(cls, v):
+        if v == "":
+            return None
+        return v

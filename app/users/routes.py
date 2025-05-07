@@ -13,7 +13,7 @@ router = APIRouter()
 async def get_me(user: User = Depends(current_user)):
     return user
 
-@router.put("/me", response_model=UserRead)
+@router.patch("/me", response_model=UserUpdate)
 async def update_me(
     data: UserUpdate,
     session: AsyncSession = Depends(get_async_session),

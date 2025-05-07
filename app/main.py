@@ -7,7 +7,6 @@ from app.db.database import engine, Base
 from app.admin import setup_admin
 
 
-
 @asynccontextmanager
 async def lifespan(application: FastAPI):
     async with engine.begin() as conn:
