@@ -21,7 +21,7 @@ async def update_me(
 ):
     db_user = await session.scalar(select(User).where(User.id == user.id))
 
-    for field, value in data.dict(exclude_unset=True).items():
+    for field, value in data.model_dump(exclude_unset=True).items():
         setattr(db_user, field, value)
 
     await session.commit()
