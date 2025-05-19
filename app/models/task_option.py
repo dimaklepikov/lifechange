@@ -1,10 +1,8 @@
-import uuid
-
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String, ForeignKey
+from sqlalchemy import String
 from sqlalchemy.orm import relationship
 from app.db.database import Base
-from app.models import Task, task_option_association
+from app.models import task_option_association
 
 
 class TaskOption(Base):

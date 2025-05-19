@@ -2,11 +2,10 @@ from typing import Optional
 import enum
 
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String, Boolean, Enum, ForeignKey
+from sqlalchemy import String, Boolean, Enum
 from sqlalchemy.orm import relationship
-from app.db.database import Base
 from app.models import User
-from sqlalchemy import Table, Column, ForeignKey, Integer
+from sqlalchemy import Table, Column, ForeignKey
 from app.db.database import Base
 
 

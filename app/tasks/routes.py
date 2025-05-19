@@ -5,8 +5,8 @@ from app.db.session import get_async_session
 from app.models.task import Task
 from app.models.user import User
 from app.auth.routes import current_user
-from typing import List
-from app.tasks.schemas import TaskRead
+from sqlalchemy.orm import joinedload
+
 
 router = APIRouter()
 
@@ -17,11 +17,13 @@ async def get_my_tasks(
     user: User = Depends(current_user)
 ):
     result = await session.execute(
-        select(Task).where(
+        select(Task)
+        .options(joinedload(Task.options))
+        .where(
             or_(
                 Task.is_global == True,
                 Task.assigned_user_id == user.id
             )
         )
     )
-    return result.scalars().all()
+    return result.unique().scalars().all()
