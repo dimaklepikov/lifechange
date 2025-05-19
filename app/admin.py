@@ -1,3 +1,4 @@
+import enum
 from fastapi import Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
@@ -10,7 +11,9 @@ from app.models.task import Task
 from app.db.database import engine
 from app.config import SECRET_KEY
 from app.auth.manager import get_user_manager
-# from fastapi_users.manager import UserNotExists, InvalidPassword
+from wtforms import SelectField
+
+
 
 templates = Jinja2Templates(directory="app/templates")
 
@@ -53,7 +56,6 @@ class AdminAuth(AuthenticationBackend):
         return response
 
 
-# 🧩 Админ-представления
 class UserAdmin(ModelView, model=User):
     column_list = [User.id, User.email, User.is_admin]
     form_columns = ["email", "is_admin"]
@@ -62,11 +64,43 @@ class UserAdmin(ModelView, model=User):
 
 
 class TaskAdmin(ModelView, model=Task):
-    column_list = [Task.id, Task.title, Task.description]
-    form_columns = ["title", "description"]
+    # TODO: Add i18n
+    # column_list = [
+    #     Task.id,
+    #     Task.title,
+    #     Task.task_type,
+    #     Task.is_global,
+    #     Task.assigned_user
+    # ]
+    form_columns = [
+        "title",
+        "description",
+        "task_type",
+        "is_global",
+        "assigned_user"
+    ]
+    form_overrides = {
+        "task_type": SelectField
+    }
+
+    form_args = {
+        "task_type": {
+            "choices": [
+                ("single_choice", "Один вариант ответа"),
+                ("multiple_choice", "Несколько вариантов ответа"),
+                ("text", "Свой вариат ответа")
+            ]
+        }
+    }
+    column_labels = {
+    Task.title: "Название",
+    Task.description: "Описание",
+    Task.task_type: "Тип задания",
+    Task.is_global: "Общее задание (для всех пользователей",
+    Task.assigned_user: "Назначено на",
+    }
 
 
-# 🚀 Подключение админки
 def setup_admin(app):
     admin = Admin(app, engine, authentication_backend=AdminAuth())
     admin.add_view(UserAdmin)

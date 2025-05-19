@@ -1,6 +1,29 @@
+from typing import Optional
+import enum
+
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String
+from sqlalchemy import String, Boolean, Enum, ForeignKey
+from sqlalchemy.orm import relationship
 from app.db.database import Base
+from app.models import User
+
+
+class TaskType(str, enum.Enum):
+    single_choice = "single_choice"
+    multiple_choice = "multiple_choice"
+    text = "text"
+
+
+    @property
+    def label(self):
+        match self:
+            case TaskType.single_choice:
+                return "Один вариант"
+            case TaskType.multiple_choice:
+                return "Несколько вариантов"
+            case TaskType.text:
+                return "Свой ответ"
+        return None
 
 
 class Task(Base):
@@ -9,3 +32,7 @@ class Task(Base):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     title: Mapped[str] = mapped_column(String, nullable=False)
     description: Mapped[str] = mapped_column(String, nullable=True)
+    task_type: Mapped[TaskType] = mapped_column(Enum(TaskType, name='task_type_enum'), nullable=False)
+    assigned_user_id: Mapped[Optional[int]] = mapped_column(ForeignKey("user.id"))
+    assigned_user: Mapped[Optional["User"]] = relationship("User", backref="assigned_tasks", lazy="joined")
+    is_global: Mapped[bool] = mapped_column(Boolean, default=False)

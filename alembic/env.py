@@ -3,6 +3,7 @@ from logging.config import fileConfig
 from sqlalchemy.ext.asyncio import async_engine_from_config
 from alembic import context
 from app.db.database import Base
+from app.models import user, task
 from app.config import DATABASE_URL
 from sqlalchemy.ext.asyncio import create_async_engine
 
@@ -22,7 +23,7 @@ def get_engine():
         pool_pre_ping=True,
         future=True,
     )
-
+print("🧠 TABLES IN MODELS:", target_metadata.tables.keys())
 async def run_migrations():
     connectable = create_async_engine(DATABASE_URL)
 
