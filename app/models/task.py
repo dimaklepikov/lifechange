@@ -6,6 +6,8 @@ from sqlalchemy import String, Boolean, Enum, ForeignKey
 from sqlalchemy.orm import relationship
 from app.db.database import Base
 from app.models import User
+from sqlalchemy import Table, Column, ForeignKey, Integer
+from app.db.database import Base
 
 
 class TaskType(str, enum.Enum):
@@ -25,6 +27,13 @@ class TaskType(str, enum.Enum):
                 return "Свой ответ"
         return None
 
+task_option_association = Table(
+    "task_option_link",
+    Base.metadata,
+    Column("task_id", ForeignKey("task.id"), primary_key=True),
+    Column("option_id", ForeignKey("task_option.id"), primary_key=True),
+)
+
 
 class Task(Base):
     __tablename__ = "task"
@@ -36,3 +45,11 @@ class Task(Base):
     assigned_user_id: Mapped[Optional[int]] = mapped_column(ForeignKey("user.id"))
     assigned_user: Mapped[Optional["User"]] = relationship("User", backref="assigned_tasks", lazy="joined")
     is_global: Mapped[bool] = mapped_column(Boolean, default=False)
+    options = relationship(
+        "TaskOption",
+        secondary=task_option_association,
+        back_populates="tasks"
+    )
+
+    def __str__(self):
+        return self.title

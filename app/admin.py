@@ -1,4 +1,3 @@
-import enum
 from fastapi import Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
@@ -8,6 +7,7 @@ from fastapi_users.password import PasswordHelper
 
 from app.models.user import User
 from app.models.task import Task
+from app.models.task_option import TaskOption
 from app.db.database import engine
 from app.config import SECRET_KEY
 from app.auth.manager import get_user_manager
@@ -63,15 +63,13 @@ class UserAdmin(ModelView, model=User):
     can_create = False
 
 
+class TaskOptionAdmin(ModelView, model=TaskOption):
+    column_list = [TaskOption.id, TaskOption.tasks, TaskOption.text]
+    form_columns = ["text", 'tasks']
+
+
 class TaskAdmin(ModelView, model=Task):
     # TODO: Add i18n
-    # column_list = [
-    #     Task.id,
-    #     Task.title,
-    #     Task.task_type,
-    #     Task.is_global,
-    #     Task.assigned_user
-    # ]
     form_columns = [
         "title",
         "description",
@@ -105,3 +103,4 @@ def setup_admin(app):
     admin = Admin(app, engine, authentication_backend=AdminAuth())
     admin.add_view(UserAdmin)
     admin.add_view(TaskAdmin)
+    admin.add_view(TaskOptionAdmin)
