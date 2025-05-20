@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 # Register events
-import app.models.events
+# import app.models.events
 from app.admin import setup_admin
 from app.auth.routes import router as auth_router
 from app.db.database import Base, engine

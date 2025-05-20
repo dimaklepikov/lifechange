@@ -5,7 +5,7 @@ from sqlalchemy import Boolean, Column, Enum, ForeignKey, String, Table
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.database import Base
-from app.models import User
+from app.models.user import User
 
 
 class TaskType(str, enum.Enum):
