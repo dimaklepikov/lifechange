@@ -24,7 +24,7 @@ async def get_my_tasks(
         .options(joinedload(Task.options))
         .where(
             or_(
-                Task.is_global is True,
+                Task.is_global == True,
                 Task.assigned_user_id == user.id
             )
         )
@@ -65,7 +65,7 @@ async def submit_answers(
                 raise HTTPException(status_code=400, detail="Нужно выбрать вариант ответа")
             if len(selected_option_ids) > 1 or text_answer:
                 raise HTTPException(status_code=400, detail="Нужно выбрать один вариант ответа")
-        else:
+        if task.task_type == TaskType.multiple_choice:
             if text_answer:
                 raise HTTPException(status_code=400, detail="Нельзя писать текстовый ответ для этого задания")
             if not selected_option_ids:
