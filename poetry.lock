@@ -1562,7 +1562,23 @@ markupsafe = "*"
 [package.extras]
 email = ["email-validator"]
 
+[[package]]
+name = "wtforms-sqlalchemy"
+version = "0.4.2"
+description = "SQLAlchemy tools for WTForms"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "wtforms_sqlalchemy-0.4.2-py3-none-any.whl", hash = "sha256:5dfa6b9cd8c0fab644178af6a90adc057c1c2695a17c20a074f1f3c4d49a434d"},
+    {file = "wtforms_sqlalchemy-0.4.2.tar.gz", hash = "sha256:638f23372e654eded3c19ea605a2d318062e26234772977b9bb1619160eed798"},
+]
+
+[package.dependencies]
+sqlalchemy = ">=1.4"
+wtforms = ">=3.1"
+
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10"
-content-hash = "fbbe7feff918bd9ed38caacca9a0a1bd033575feefc2196b241e9c5768c17076"
+content-hash = "1f418768733a73d8d263f201538e77d87b586c24f0401576a91d31aa25ca6500"

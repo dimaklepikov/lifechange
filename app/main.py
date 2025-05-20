@@ -6,6 +6,8 @@ from app.users.routes import router as user_router
 from app.tasks.routes import router as task_router
 from app.db.database import engine, Base
 from app.admin import setup_admin
+# Register events
+import app.models.events
 
 
 @asynccontextmanager

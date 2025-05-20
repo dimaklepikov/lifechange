@@ -6,7 +6,6 @@ from sqladmin.authentication import AuthenticationBackend
 from fastapi_users.password import PasswordHelper
 
 from app.models.user import User
-from app.models.task import Task
 from app.models.task_option import TaskOption
 from app.db.database import engine
 from app.config import SECRET_KEY
@@ -14,11 +13,17 @@ from app.auth.manager import get_user_manager
 from wtforms import SelectField
 
 
+from wtforms import Form, StringField, SelectMultipleField
+from wtforms.validators import DataRequired
+from sqlalchemy import select
+from app.models.task import Task, TaskType
+from app.db.database import async_session_maker
+
+
 
 templates = Jinja2Templates(directory="app/templates")
 
 
-# 🔐 Кастомная авторизация
 class AdminAuth(AuthenticationBackend):
     def __init__(self):
         super().__init__(secret_key=SECRET_KEY)
@@ -64,9 +69,28 @@ class UserAdmin(ModelView, model=User):
 
 
 class TaskOptionAdmin(ModelView, model=TaskOption):
-    column_list = [TaskOption.id, TaskOption.tasks, TaskOption.text]
-    form_columns = ["text", 'tasks']
+    column_list = [TaskOption.id, TaskOption.text, TaskOption.tasks]
 
+    @staticmethod
+    def make_task_option_form(tasks_choices):
+        class _TaskOptionForm(Form):
+            text = StringField("Вариант ответа", validators=[DataRequired()])
+            tasks = SelectMultipleField(
+                "Применимо к заданиям",
+                coerce=str,
+                choices=tasks_choices
+            )
+        return _TaskOptionForm
+
+    async def scaffold_form(self, request):
+        async with async_session_maker() as session:
+            result = await session.execute(
+                select(Task).where(Task.task_type != TaskType.text)
+            )
+            tasks = result.scalars().all()
+
+            choices = [(str(task.id), task.title) for task in tasks]
+            return self.make_task_option_form(choices)
 
 class TaskAdmin(ModelView, model=Task):
     # TODO: Add i18n
