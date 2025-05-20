@@ -1,12 +1,12 @@
 from fastapi import APIRouter, Depends
+from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, or_
+from sqlalchemy.orm import joinedload
+
+from app.auth.routes import current_user
 from app.db.session import get_async_session
 from app.models.task import Task
 from app.models.user import User
-from app.auth.routes import current_user
-from sqlalchemy.orm import joinedload
-
 
 router = APIRouter()
 
@@ -21,7 +21,7 @@ async def get_my_tasks(
         .options(joinedload(Task.options))
         .where(
             or_(
-                Task.is_global == True,
+                Task.is_global is True,
                 Task.assigned_user_id == user.id
             )
         )

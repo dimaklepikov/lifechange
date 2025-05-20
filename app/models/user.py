@@ -1,7 +1,9 @@
-from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String, Boolean, Integer, Float
 from fastapi_users.db import SQLAlchemyBaseUserTableUUID
+from sqlalchemy import Boolean, Float, Integer, String
+from sqlalchemy.orm import Mapped, mapped_column
+
 from app.db.database import Base
+
 
 class User(SQLAlchemyBaseUserTableUUID, Base):
     __tablename__ = "user"

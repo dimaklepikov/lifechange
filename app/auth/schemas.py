@@ -1,6 +1,8 @@
-from fastapi_users import schemas
-from uuid import UUID
 from typing import Optional
+from uuid import UUID
+
+from fastapi_users import schemas
+
 
 class AuthUserRead(schemas.BaseUser[UUID]):
     id: UUID

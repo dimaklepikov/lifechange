@@ -1,12 +1,14 @@
-from uuid import UUID
 from typing import AsyncGenerator
+from uuid import UUID
 
+from fastapi_users.authentication import (AuthenticationBackend,
+                                          BearerTransport, JWTStrategy)
 from fastapi_users.manager import BaseUserManager
-from fastapi_users.authentication import AuthenticationBackend, JWTStrategy, BearerTransport
-from app.models.user import User
+
+from app.auth.schemas import AuthUserCreate
 from app.auth.user_db import get_user_db
 from app.config import SECRET_KEY
-from app.auth.schemas import AuthUserCreate
+from app.models.user import User
 
 bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
 

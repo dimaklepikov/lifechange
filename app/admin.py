@@ -1,25 +1,19 @@
 from fastapi import Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
+from fastapi_users.password import PasswordHelper
 from sqladmin import Admin, ModelView
 from sqladmin.authentication import AuthenticationBackend
-from fastapi_users.password import PasswordHelper
-
-from app.models.user import User
-from app.models.task_option import TaskOption
-from app.db.database import engine
-from app.config import SECRET_KEY
-from app.auth.manager import get_user_manager
-from wtforms import SelectField
-
-
-from wtforms import Form, StringField, SelectMultipleField
-from wtforms.validators import DataRequired
 from sqlalchemy import select
+from wtforms import Form, SelectField, SelectMultipleField, StringField
+from wtforms.validators import DataRequired
+
+from app.auth.manager import get_user_manager
+from app.config import SECRET_KEY
+from app.db.database import async_session_maker, engine
 from app.models.task import Task, TaskType
-from app.db.database import async_session_maker
-
-
+from app.models.task_option import TaskOption
+from app.models.user import User
 
 templates = Jinja2Templates(directory="app/templates")
 

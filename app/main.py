@@ -1,13 +1,14 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
-from app.auth.routes import router as auth_router
-from app.users.routes import router as user_router
-from app.tasks.routes import router as task_router
-from app.db.database import engine, Base
-from app.admin import setup_admin
+
 # Register events
 import app.models.events
+from app.admin import setup_admin
+from app.auth.routes import router as auth_router
+from app.db.database import Base, engine
+from app.tasks.routes import router as task_router
+from app.users.routes import router as user_router
 
 
 @asynccontextmanager

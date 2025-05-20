@@ -1,7 +1,9 @@
-from pydantic import BaseModel
-from uuid import UUID
 from enum import Enum
 from typing import Optional
+from uuid import UUID
+
+from pydantic import BaseModel
+
 
 class TaskType(str, Enum):
     single_choice = "single_choice"

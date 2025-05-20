@@ -1,7 +1,9 @@
-from fastapi_users import schemas
-from uuid import UUID
 from typing import Optional
+from uuid import UUID
+
+from fastapi_users import schemas
 from pydantic import BaseModel, field_validator
+
 
 class UserRead(schemas.BaseUser[UUID]):
     id: UUID

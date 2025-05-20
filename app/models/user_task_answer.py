@@ -1,13 +1,12 @@
 import uuid
 from typing import Optional
 
-from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String, ForeignKey, Integer
-from sqlalchemy.orm import relationship
+from sqlalchemy import ForeignKey, Integer, String
+from sqlalchemy.dialects.postgresql import ARRAY
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from app.db.database import Base
 from app.models import Task, User
-from sqlalchemy.dialects.postgresql import ARRAY
-
 
 
 class UserTaskAnswer(Base):
