@@ -1,0 +1,8 @@
+error:
+  local_user:
+    is_prohibited: "Вы не авторизированы"
+
+success:
+  task_processed: "Функция выполнена успешно"
+  user:
+    authenticated: "Аутентификация успешно завершена"
